@@ -28,27 +28,28 @@ MongoClient.connect(uri, {  useNewUrlParser: true, useUnifiedTopology: true })
      //route for User Profile
 appServer.get('/userprofile',(req,res) => {
     //sendgin html file
-        res.sendfile( __dirname + '/pages/userprofile.html');
+    console.log('get profile');
+        res.sendFile( __dirname + '/pages/userprofile.html');
     })
     
     //route for home page
     appServer.get('/home',(req,res) => {
-    
-        res.sendfile(__dirname + '/pages/home.html');
+        console.log(' get home');
+        res.sendFile(__dirname + '/pages/home.html');
     })
     
     //routre for login 
     appServer.get('/login',(req,res) => {
-    
-        res.sendfile(__dirname+ '/pages/login.html');
+        console.log(' get login');
+        res.sendFile(__dirname+ '/pages/login.html');
     })
     //route for signup
     appServer.get('/signup',(req,res) => {
-    
-        res.sendfile(__dirname+ '/pages/signup.html');
+        console.log(' get signup');
+        res.sendFile(__dirname+ '/pages/signup.html');
     })
 
-    
+
     
   })
 
