@@ -3,6 +3,12 @@ const express = require('express');
 
 //naming express server appServer
 appServer = express();
+
+// Parse URL-encoded bodies (as sent by HTML forms)
+appServer.use(express.urlencoded());
+
+// Parse JSON bodies (as sent by API clients)
+appServer.use(express.json());
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://jeradXander:westpoint@amazonsweapprentices.iyoil.mongodb.net/DateIn?retryWrites=true&w=majority";
 
@@ -18,11 +24,12 @@ appServer.listen(process.env.PORT || 3000, (error) => {
     }
 });
 
-
+//connecting to mongo client
 MongoClient.connect(uri, {  useNewUrlParser: true, useUnifiedTopology: true })
   .then(client => {
     console.log('Connected to Database')
-     const db = client.db('star-wars-quotes')
+    const db = client.db('Datein')
+     const usersCollection = db.collection('users')
 
 
      //route for User Profile
@@ -50,18 +57,18 @@ appServer.get('/userprofile',(req,res) => {
     })
 
 
+    appServer.post('/signup', (req, res) => {
+
+       console.log(req.body)
+
+
+        usersCollection.insertOne(req.body)
+          .then(result => {
+            console.log(result)
+            res.redirect('/home')
+          })
+          .catch(error => console.error(error))
+      })
+
     
   })
-
-// mongoClient.connect(err => {
-//   const collection = mongoClient.db("DateIn");
-
-
-
-//   console.log('WE hitting in the big leagues connected to Mongo')
-//    mongoClient.close();
-// });
-
-/* 
-    ROUTES
-*/
