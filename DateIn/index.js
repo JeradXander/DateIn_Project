@@ -18,7 +18,7 @@ appServer.listen(process.env.PORT || 3000, (error) => {
     }
 });
 
-
+//connecting to mongo client
 MongoClient.connect(uri, {  useNewUrlParser: true, useUnifiedTopology: true })
   .then(client => {
     console.log('Connected to Database')
@@ -52,16 +52,3 @@ appServer.get('/userprofile',(req,res) => {
 
     
   })
-
-// mongoClient.connect(err => {
-//   const collection = mongoClient.db("DateIn");
-
-
-
-//   console.log('WE hitting in the big leagues connected to Mongo')
-//    mongoClient.close();
-// });
-
-/* 
-    ROUTES
-*/
