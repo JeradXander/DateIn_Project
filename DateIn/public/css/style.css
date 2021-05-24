@@ -5,5 +5,10 @@ h1 {
   color: crimson;
 }
 body {
+    height: 100vh;
+    width: 100vw;
+  /* display: flex; */
   background-color: #370617;
+  background-image: url('/images/datin_background.jpeg');
+  background-repeat: no-repeat;
 }
