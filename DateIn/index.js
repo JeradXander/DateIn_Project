@@ -6,10 +6,15 @@ const express = require('express');
 appServer = express();
 
 // Parse URL-encoded bodies (as sent by HTML forms)
-appServer.use(express.urlencoded());
+appServer.use(express.urlencoded({ extended: true }))
 
 // Parse JSON bodies (as sent by API clients)
 appServer.use(express.json());
+
+//uses static public folder to access statci files
+appServer.use(express.static('public'));
+
+
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://jeradXander:westpoint@amazonsweapprentices.iyoil.mongodb.net/DateIn?retryWrites=true&w=majority";
 const {ObjectId} = require('mongodb');
@@ -37,7 +42,7 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
         appServer.get('/userprofile', (req, res) => {
             //sendgin html file
             console.log('get profile');
-            res.sendFile(__dirname + '/pages/userprofile.html');
+            res.sendFile(__dirname + '/public/pages/userprofile.html');
 
            
         })
@@ -47,7 +52,7 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
         appServer.get('/home', async(req, res) => {
            
             console.log(' get home');
-            res.sendFile(__dirname + '/pages/home.html');
+            res.sendFile(__dirname + '/public/pages/home.html');
 
             // const filter = {
             // }
@@ -55,32 +60,27 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
             // for (const key in req.query){
 
             // }
-            const results = await usersCollection.find({...req.query}).toArray();
+            // //this is example for showing sollection
+            // const results = await usersCollection.find({...req.query}).toArray();
 
-            console.log(results);
+            // console.log(results);
         })
 
         //routre for login 
         appServer.get('/login', (req, res) => {
             console.log(' get login');
-            res.sendFile(__dirname + '/pages/login.html');
+            res.sendFile(__dirname + '/public/pages/login.html');
         })
         //route for signup
         appServer.get('/signup', (req, res) => {
             console.log(' get signup');
-            res.sendFile(__dirname + '/pages/signup.html');
+            res.sendFile(__dirname + '/public/pages/signup.html');
         })
 
 
         appServer.post('/signup', (req, res) => {
             
-            //getting unique id
-            var dateNow = new Date();
-            var dateToString = dateNow.toString();
-            userId = randstr(dateToString);
-
-
-
+        
 
             console.log(req.body)
 
