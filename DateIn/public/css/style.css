@@ -1,14 +1,41 @@
-h1 {
-  text-align: center;
-  font-size: larger;
-  font-style: italic;
-  color: crimson;
-}
 body {
-    height: 100vh;
-    width: 100vw;
+  height: 100vh;
+  width: 100vw;
   /* display: flex; */
   background-color: #370617;
-  background-image: url('/images/datin_background.jpeg');
+  background-image: linear-gradient(
+      rgba(55, 6, 23, 0.9),
+      rgba(255, 186, 8, 0.25)
+    ),
+    url("/images/datin_background.jpeg");
   background-repeat: no-repeat;
+}
+
+.tinted-image {
+  background-image: 
+    /* top, transparent red */ linear-gradient(
+      rgba(255, 0, 0, 0.45),
+      rgba(255, 0, 0, 0.45)
+    ),
+    /* your image */ url(image.jpg);
+}
+
+.app_name {
+  text-align: center;
+  font-size: larger;
+  color: crimson;
+  font-family: "Cinzel Decorative";
+  font-weight: 700;
+  font-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30vh;
+  font-size: 25vw;
+}
+
+.name_div {
+  font-family: "Cinzel Decorative";
+  height: 30%;
+  width: 100%;
 }
