@@ -1,6 +1,9 @@
 body {
   height: 100vh;
   width: 100vw;
+  margin: 0;
+  font-family: "Cinzel Decorative";
+  font-weight: 700;
 }
 
 .outside_div {
@@ -10,13 +13,15 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
-.single_row {
+.main_row {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .left_col {
@@ -30,9 +35,12 @@ body {
   background-image: linear-gradient(to right, #dc2f02, #ffba08);
   width: 40vw;
 }
+.navbar-brand {
+}
 
 .navbar_inside_container a {
   color: white;
+  padding-left: 0;
 }
 
 .profile_image {
@@ -40,6 +48,26 @@ body {
   border: 7px solid white;
   border-radius: 50%;
   color: white;
+}
+
+.connections_and_messages_container a {
+  text-decoration: none;
+  color: black;
+}
+
+.connections_and_messages_container a:hover {
+  text-decoration: underline #dc2f02;
+}
+
+.connections_and_messages_row {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.messages {
+  margin-left: 10px;
 }
 
 .right_col {
