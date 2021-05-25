@@ -11,12 +11,17 @@
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/css/userprofile_style.css" />
   </head>
   <body>
     <div class="container outside_div">
-      <div class="row single_row">
-        <div class="col-6 left_col">
+      <div class="row main_row">
+        <div class="col-5 left_col">
           <nav class="navbar sticky-top profile_navbar">
             <div class="container-fluid navbar_inside_container">
               <a
@@ -31,8 +36,19 @@
               >
             </div>
           </nav>
+          <div class="container connections_and_messages_container">
+            <div class="row connections_and_messages_row">
+              <div class="col-4 connections">
+                <a href="#"><h5>Connections</h5></a>
+              </div>
+              <div class="col-4 messages">
+                <a href="#"><h5>Messages</h5></a>
+              </div>
+            </div>
+          </div>
+          <div class="container card_container"></div>
         </div>
-        <div class="col-6 right_col"></div>
+        <div class="col-7 right_col"></div>
       </div>
     </div>
 
