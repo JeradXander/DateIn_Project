@@ -12,10 +12,7 @@ body {
   width: 100vw;
   /* display: flex; */
   background-color: #370617;
-  background-image: linear-gradient(
-      rgba(55, 6, 23, 1.0),
-      rgba(255, 186, 8, 0.40)
-    ),
+  background-image: linear-gradient(rgba(55, 6, 23, 1), rgba(255, 186, 8, 0.4)),
     url("/images/datin_signup_background.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -63,7 +60,7 @@ body {
 
 .cust_btn {
   font-weight: 700;
-  width: 70%;
+  width: 60%;
   justify-content: center;
 }
 
@@ -75,10 +72,7 @@ body {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-</style>
-
-.zoom {
-  
+</style > .zoom {
   transition: transform 0.2s; /* Animation */
   margin: 0 auto;
 }
@@ -90,11 +84,10 @@ body {
 }
 
 .form_div {
-  width:100%;
-display: flex;
-justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   align-items: center;
-
 }
 
 .form_label {
