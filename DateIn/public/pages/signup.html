@@ -1,17 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
-    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/png">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/css/signup_style.css" />
 </head>
+
 <body>
-    <h1>
-        SignUp Page
-    </h1>
-    <form action="/signup" method="POST">
+    <div class="outside_div">
+        <div class="name_div">
+            <h1 class="app_name">
+                <span style="color: #ffffff">Sign</span><span style="color: #ffba08">&nbspUP</span>
+            </h1>
+        </div>
+
+        <!-- <img src="/images/DateIn_Logo.png" alt="DateIn Logo"> -->
+        <div class="form_div" action="/signup" method="POST">
+            <div class="row" style="width: 75%">
+                <div class="col-md-10 mx-auto">
+                    <form>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="inputEmail" style="color: #ffffff;">Email</label>
+                                <input type="email" class="form-control" id="inputEmail" placeholder="Email Adress">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="inputPassword" style="color: #ffffff;">Password</label>
+                                <input type="password" class="form-control" id="inputPassword" placeholder="password">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="inputFirstname" style="color: #ffffff;">First name</label>
+                                <input type="text" class="form-control" id="inputFirstname" placeholder="First name">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="inputLastname" style="color: #ffffff;">Last name</label>
+                                <input type="text" class="form-control" id="inputLastname" placeholder="Last name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="inputIdentity" style="color: #ffffff;">You are</label>
+                                <select class="form-control" id="sel1">
+                                    <option>Female</option>
+                                    <option>Male</option>
+                                    <option>Other</option>
+
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="inputLookingFor " style="color: #ffffff;">Interested in </label>
+                                <select class="form-control" id="sel1">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>No Preference</option>
+
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label for="inputContactNumber" style="color: #ffffff;">Contact Number</label>
+                                <input type="number" class="form-control" id="inputContactNumber"
+                                    placeholder="Contact Number">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="inputWebsite" style="color: #ffffff;">Website</label>
+                                <input type="text" class="form-control" id="inputWebsite" placeholder="Website">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: center;">
+                            <button type="submit" class="btn cust_btn btn-lg zoom"
+                            style="background-color: #ffba08; margin-top: 30px;">
+                            Sign up
+                        </button>
+
+                        </div>
+                        
+                    
+                        <div id="loginHelp" class="form-text"
+                            style="display: flex; justify-content: center; color: #ffffff; margin-top: 15px; font-size: large;">
+                            Already have an account? <a href="/login" style="color: #ffba08;">Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- <form action="/signup" method="POST">
         <label for="username">UserName</label>
         <input type="text" id="username" name="username">
         <label for="password">Password</label>
@@ -25,6 +127,12 @@
     <ul>
         <li><a href="/home">Home</a></li>
         <li><a href="/login">login</a></li>
-    </ul>
+    </ul> -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
