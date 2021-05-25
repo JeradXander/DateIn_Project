@@ -1,3 +1,12 @@
+.outside_div {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 body {
   height: 100vh;
   width: 100vw;
@@ -9,6 +18,7 @@ body {
     ),
     url("/images/datin_background.jpeg");
   background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .tinted-image {
@@ -22,20 +32,46 @@ body {
 
 .app_name {
   text-align: center;
-  font-size: larger;
   color: crimson;
   font-family: "Cinzel Decorative";
   font-weight: 700;
-  font-size: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30vh;
-  font-size: 25vw;
+  font-size: 20vh;
 }
 
 .name_div {
   font-family: "Cinzel Decorative";
-  height: 30%;
+  height: 27%;
+  width: 100vh;
+  padding: 30px;
+}
+
+.button_div {
+  text-align: center;
+  color: crimson;
+  font-family: "Cinzel Decorative";
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cust_btn {
+  font-weight: 700;
   width: 100%;
+}
+
+.zoom {
+  background-color: green;
+  transition: transform 0.2s; /* Animation */
+  margin: 0 auto;
+}
+
+.zoom:hover {
+  transform: scale(
+    1.5
+  ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
