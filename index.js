@@ -5,7 +5,7 @@ var flash = require("express-flash");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 //naming express server appServer
 appServer = express();
 
