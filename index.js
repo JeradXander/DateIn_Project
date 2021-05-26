@@ -1,12 +1,13 @@
 //require("dotenv").config(".env");
 //requires express for server
 const express = require("express");
-
+const bodyParser= require('body-parser');
 //naming express server appServer
 appServer = express();
 
 // Parse URL-encoded bodies (as sent by HTML forms)
 appServer.use(express.urlencoded({ extended: true }));
+appServer.use(bodyParser.urlencoded({ extended: true }))
 
 // Parse JSON bodies (as sent by API clients)
 appServer.use(express.json());
@@ -26,7 +27,7 @@ appServer.listen(process.env.PORT || 3000, (error) => {
     console.log(error);
   } else {
     //output to us to let us now we are listening
-    console.log("Server started at port 3000");
+    console.log("Server started at port 3000 changed");
   }
 });
 
@@ -48,7 +49,7 @@ MongoClient.connect(uri, {
 
   //can except ?name=
   //route for home page
-  appServer.get("/home", async (req, res) => {
+  appServer.get("/", async (req, res) => {
     console.log(" get home");
     res.sendFile(__dirname + "/public/pages/home.html");
 
@@ -76,45 +77,56 @@ MongoClient.connect(uri, {
   });
 
   appServer.post("/signup", (req, res) => {
-    console.log(req.body);
+    
+    
+    //console.log(req.body);
 
     const newUser = {
-      name: req.body.username,
-      password: req.body.password,
-      phone: req.body.phone,
+      email: req.body.inputEmail,
+      password: req.body.inputPassword,
+      firstName: req.body.inputFirstname,
+      lastName: req.body.inputLastname,
+      identity: req.body.inputIdentity,
+      lookingFor: req.body.lookingFor,
+      contactNumber: req.body.inputContactNumber,
+      linkedIn: req.body.linkedin,
+      age: req.body.age,
+      occupation: req.body.occupation,
+      aboutMe: req.body.aboutMe,
+      firstName: req.body.lookingFor,
     };
 
     usersCollection
       .insertOne(newUser)
       .then((result) => {
         console.log(result);
-        res.redirect("/home");
+        res.redirect("/");
       })
       .catch((error) => console.error(error));
   });
 
   //edit
-  appServer.put("/info", async (req, res) => {
-    const { name, password } = req.body;
-    const { _id } = req.params;
+  // appServer.put("/info", async (req, res) => {
+  //   const { name, password } = req.body;
+  //   const { _id } = req.params;
 
-    const filter = {
-      _id: ObjectId(id),
-    };
+  //   const filter = {
+  //     _id: ObjectId(id),
+  //   };
 
-    const updateDocument = {};
+  //   const updateDocument = {};
 
-    //example
-    if (name) {
-      updateDocument[name] = name;
-    }
+  //   //example
+  //   if (name) {
+  //     updateDocument[name] = name;
+  //   }
 
-    const results = await usersCollection.updateOne(filter, {
-      $set: updateDocument,
-    });
+  //   const results = await usersCollection.updateOne(filter, {
+  //     $set: updateDocument,
+  //   });
 
-    console.log(results);
-  });
+  //   console.log(results);
+  // });
 });
 
 function randstr(prefix) {
