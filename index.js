@@ -1,13 +1,26 @@
 //require("dotenv").config(".env");
 //requires express for server
 const express = require("express");
+var flash = require('express-flash');
+const session = require('express-session');
 const bodyParser= require('body-parser');
+var cookieParser = require('cookie-parser')
 //naming express server appServer
 appServer = express();
 
 // Parse URL-encoded bodies (as sent by HTML forms)
 appServer.use(express.urlencoded({ extended: true }));
 appServer.use(bodyParser.urlencoded({ extended: true }))
+
+//flash use maybe too much?
+   appServer.use(cookieParser());
+  appServer.use(session({
+    secret: 'Westpoint',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }));
+  appServer.use(flash());
 
 // Parse JSON bodies (as sent by API clients)
 appServer.use(express.json());
@@ -77,33 +90,40 @@ MongoClient.connect(uri, {
   });
 
   appServer.post("/signup", (req, res) => {
+    3*930
     
-    
-    //console.log(req.body);
+    //db find all emails
+    //get req password
+    //get bcrypto hash password
 
     const newUser = {
       email: req.body.inputEmail,
       password: req.body.inputPassword,
-      firstName: req.body.inputFirstname,
-      lastName: req.body.inputLastname,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       identity: req.body.inputIdentity,
-      lookingFor: req.body.lookingFor,
+      lookingFor: req.body.lookingForSelect,
       contactNumber: req.body.inputContactNumber,
       linkedIn: req.body.linkedin,
       age: req.body.age,
       occupation: req.body.occupation,
       aboutMe: req.body.aboutMe,
-      firstName: req.body.lookingFor,
+      appsRecieved: [],
+      candidatesAccepted:[]
     };
+
+    req.flash('success', 'Registration successfully');
+    res.locals.message = req.flash();
 
     usersCollection
       .insertOne(newUser)
       .then((result) => {
         console.log(result);
-        res.redirect("/");
+        // res.redirect("/");
       })
       .catch((error) => console.error(error));
   });
+
 
   //edit
   // appServer.put("/info", async (req, res) => {
