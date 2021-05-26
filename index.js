@@ -6,6 +6,13 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
+const multer = require("multer");
+const imager = require("multer-imager");
+const gm = require("gm");
+const aws = require("aws-sdk");
+const multerS3 = require("multer-s3");
+const s3 = new aws.S3({});
+
 //naming express server appServer
 appServer = express();
 
@@ -35,6 +42,20 @@ const MongoClient = require("mongodb").MongoClient;
 const uri =
   "mongodb+srv://jeradXander:westpoint@amazonsweapprentices.iyoil.mongodb.net/DateIn?retryWrites=true&w=majority";
 const { ObjectId } = require("mongodb");
+
+var upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "dateinphotos",
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString());
+    },
+  }),
+});
+
 //in many environments (e.g. Heroku), and as a convention, you can set the environment variable PORT to tell your web server what port to listen on.
 //So process.env.PORT || 3000 means: whatever is in the environment variable PORT, or 3000 if there's nothing there.
 appServer.listen(process.env.PORT || 3000, (error) => {
@@ -92,41 +113,47 @@ MongoClient.connect(uri, {
     res.sendFile(__dirname + "/public/pages/signup.html");
   });
 
-  appServer.post("/signup", async (req, res) => {
-    3 * 930;
+  appServer.post(
+    "/signup",
+    upload.array("userImage", 1),
+    async (req, res, next) => {
+      const hashedPassword = await bcrypt.hash(req.body.inputPassword, 10);
+      //db find all emails
+      //get req password
+      //get bcrypto hash password
 
-    const hashedPassword = await bcrypt.hash(req.body.inputPassword, 10);
-    //db find all emails
-    //get req password
-    //get bcrypto hash password
+      console.log(JSON.stringify(req.files));
+      console.log(req.files);
+      console.log(req.files.length);
 
-    const newUser = {
-      email: req.body.inputEmail,
-      password: hashedPassword,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      identity: req.body.inputIdentity,
-      lookingFor: req.body.lookingForSelect,
-      contactNumber: req.body.inputContactNumber,
-      linkedIn: req.body.linkedin,
-      age: req.body.age,
-      occupation: req.body.occupation,
-      aboutMe: req.body.aboutMe,
-      appsRecieved: [],
-      candidatesAccepted: [],
-    };
+      const newUser = {
+        email: req.body.inputEmail,
+        password: hashedPassword,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        identity: req.body.inputIdentity,
+        lookingFor: req.body.lookingForSelect,
+        contactNumber: req.body.inputContactNumber,
+        linkedIn: req.body.linkedin,
+        age: req.body.age,
+        occupation: req.body.occupation,
+        aboutMe: req.body.aboutMe,
+        appsRecieved: [],
+        candidatesAccepted: [],
+      };
 
-    req.flash("success", "Registration successfully");
-    res.locals.message = req.flash();
+      req.flash("success", "Registration successfully");
+      res.locals.message = req.flash();
 
-    usersCollection
-      .insertOne(newUser)
-      .then((result) => {
-        console.log(result);
-        res.redirect("/userprofile");
-      })
-      .catch((error) => console.error(error));
-  });
+      usersCollection
+        .insertOne(newUser)
+        .then((result) => {
+          //console.log(result);
+          res.redirect("/userprofile");
+        })
+        .catch((error) => console.error(error));
+    }
+  );
 
   //edit
   // appServer.put("/info", async (req, res) => {
