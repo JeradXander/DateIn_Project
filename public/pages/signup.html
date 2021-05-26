@@ -41,6 +41,8 @@
           <div class="col-md-10 mx-auto">
             <form action="/signup" method="POST" >
               <div class="form-group row">
+
+              
                 <div class="col-sm-6">
                   <label for="inputEmail" style="color: #ffffff">Email</label>
                   <input
@@ -51,6 +53,8 @@
                     placeholder="Email Address"
                   />
                 </div>
+
+
                 <div class="col-sm-6">
                   <label for="inputPassword" style="color: #ffffff"
                     >Password</label
@@ -66,26 +70,26 @@
               </div>
               <div class="form-group row">
                 <div class="col-sm-6">
-                  <label for="inputFirstname" style="color: #ffffff"
+                  <label for="firstName" style="color: #ffffff"
                     >First name</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="inputFirstname"
-                    name="inputFirstname"
+                    id="firstName"
+                    name="firstName"
                     placeholder="First name"
                   />
                 </div>
                 <div class="col-sm-6">
-                  <label for="inputLastname" style="color: #ffffff"
+                  <label for="inputLastName" style="color: #ffffff"
                     >Last name</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="inputLastname"
-                    name="inputLastname"
+                    id="inputLastName"
+                    name="lastName"
                     placeholder="Last name"
                   />
                 </div>
@@ -104,10 +108,10 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="inputLookingFor " style="color: #ffffff"
+                  <label for="inputLookingFor" style="color: #ffffff"
                     >Interested in
                   </label>
-                  <select class="form-control" id="lookingFor" name="lookingFor">
+                  <select class="form-control" id="inputLookingFor" name="lookingForSelect">
                     <option>Male</option>
                     <option>Female</option>
                     <option>No Preference</option>
@@ -446,6 +450,12 @@
               </div>
 
               <div style="display: flex; justify-content: center">
+
+                <!-- <% if(locals.message){ %>
+                  <div class="alert alert-success" role="alert">
+                      <strong>Well done!</strong> <%=message.success%>
+                  </div>
+              <% } %> -->
                 <button
                   type="submit"
                   class="btn cust_btn btn-lg zoom"
@@ -453,6 +463,7 @@
                 >
                   Sign up
                 </button>
+              
               </div>
 
               <div
