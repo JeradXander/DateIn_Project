@@ -1,26 +1,29 @@
 //require("dotenv").config(".env");
 //requires express for server
 const express = require("express");
-var flash = require('express-flash');
-const session = require('express-session');
-const bodyParser= require('body-parser');
-var cookieParser = require('cookie-parser')
+var flash = require("express-flash");
+const session = require("express-session");
+const bodyParser = require("body-parser");
+var cookieParser = require("cookie-parser");
+const bcrypt = require("bcrypt");
 //naming express server appServer
 appServer = express();
 
 // Parse URL-encoded bodies (as sent by HTML forms)
 appServer.use(express.urlencoded({ extended: true }));
-appServer.use(bodyParser.urlencoded({ extended: true }))
+appServer.use(bodyParser.urlencoded({ extended: true }));
 
 //flash use maybe too much?
-   appServer.use(cookieParser());
-  appServer.use(session({
-    secret: 'Westpoint',
+appServer.use(cookieParser());
+appServer.use(
+  session({
+    secret: "Westpoint",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }
-  }));
-  appServer.use(flash());
+    cookie: { secure: true },
+  })
+);
+appServer.use(flash());
 
 // Parse JSON bodies (as sent by API clients)
 appServer.use(express.json());
@@ -89,16 +92,17 @@ MongoClient.connect(uri, {
     res.sendFile(__dirname + "/public/pages/signup.html");
   });
 
-  appServer.post("/signup", (req, res) => {
-    3*930
-    
+  appServer.post("/signup", async (req, res) => {
+    3 * 930;
+
+    const hashedPassword = await bcrypt.hash(req.body.inputPassword, 10);
     //db find all emails
     //get req password
     //get bcrypto hash password
 
     const newUser = {
       email: req.body.inputEmail,
-      password: req.body.inputPassword,
+      password: hashedPassword,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       identity: req.body.inputIdentity,
@@ -109,21 +113,20 @@ MongoClient.connect(uri, {
       occupation: req.body.occupation,
       aboutMe: req.body.aboutMe,
       appsRecieved: [],
-      candidatesAccepted:[]
+      candidatesAccepted: [],
     };
 
-    req.flash('success', 'Registration successfully');
+    req.flash("success", "Registration successfully");
     res.locals.message = req.flash();
 
     usersCollection
       .insertOne(newUser)
       .then((result) => {
         console.log(result);
-        // res.redirect("/");
+        res.redirect("/userprofile");
       })
       .catch((error) => console.error(error));
   });
-
 
   //edit
   // appServer.put("/info", async (req, res) => {
