@@ -1,4 +1,4 @@
-//require("dotenv").config(".env");
+require("dotenv").config();
 //requires express for server
 const express = require("express");
 var flash = require("express-flash");
@@ -39,8 +39,7 @@ appServer.use(express.json());
 appServer.use(express.static("public"));
 
 const MongoClient = require("mongodb").MongoClient;
-const uri =
-  "mongodb+srv://jeradXander:westpoint@amazonsweapprentices.iyoil.mongodb.net/DateIn?retryWrites=true&w=majority";
+const uri = process.env.MONGOURL;
 const { ObjectId } = require("mongodb");
 
 var upload = multer({
@@ -113,47 +112,41 @@ MongoClient.connect(uri, {
     res.sendFile(__dirname + "/public/pages/signup.html");
   });
 
-  appServer.post(
-    "/signup",
-    upload.array("userImage", 1),
-    async (req, res, next) => {
-      const hashedPassword = await bcrypt.hash(req.body.inputPassword, 10);
-      //db find all emails
-      //get req password
-      //get bcrypto hash password
+  appServer.post("/signup", async (req, res) => {
+    const hashedPassword = await bcrypt.hash(req.body.inputPassword, 10);
+    //db find all emails
+    //get req password
+    //get bcrypto hash password
 
-      console.log(JSON.stringify(req.files));
-      console.log(req.files);
-      console.log(req.files.length);
+    const newUser = {
+      email: req.body.inputEmail,
+      password: hashedPassword,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      identity: req.body.inputIdentity,
+      lookingFor: req.body.lookingForSelect,
+      contactNumber: req.body.inputContactNumber,
+      linkedIn: req.body.linkedin,
+      age: req.body.age,
+      occupation: req.body.occupation,
+      aboutMe: req.body.aboutMe,
+      appsRecieved: [],
+      candidatesAccepted: [],
+      imageURL:
+        "https://images.unsplash.com/photo-1604700403855-dc64a1320324?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80",
+    };
 
-      const newUser = {
-        email: req.body.inputEmail,
-        password: hashedPassword,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        identity: req.body.inputIdentity,
-        lookingFor: req.body.lookingForSelect,
-        contactNumber: req.body.inputContactNumber,
-        linkedIn: req.body.linkedin,
-        age: req.body.age,
-        occupation: req.body.occupation,
-        aboutMe: req.body.aboutMe,
-        appsRecieved: [],
-        candidatesAccepted: [],
-      };
+    req.flash("success", "Registration successfully");
+    res.locals.message = req.flash();
 
-      req.flash("success", "Registration successfully");
-      res.locals.message = req.flash();
-
-      usersCollection
-        .insertOne(newUser)
-        .then((result) => {
-          //console.log(result);
-          res.redirect("/userprofile");
-        })
-        .catch((error) => console.error(error));
-    }
-  );
+    usersCollection
+      .insertOne(newUser)
+      .then((result) => {
+        //console.log(result);
+        res.redirect("/userprofile");
+      })
+      .catch((error) => console.error(error));
+  });
 
   //edit
   // appServer.put("/info", async (req, res) => {
