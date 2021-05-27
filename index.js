@@ -75,6 +75,7 @@ MongoClient.connect(uri, {
   console.log("Connected to Database");
   const db = client.db("Datein");
   const usersCollection = db.collection("users");
+  console.log(typeof usersCollection);
 
   //route for User Profile
   appServer.get("/userprofile", (req, res) => {
@@ -101,11 +102,66 @@ MongoClient.connect(uri, {
     // console.log(results);
   });
 
+  appServer.get("/loginf", (req, res) => {
+    console.log(" get loginfailed");
+    res.sendFile(__dirname + "/public/pages/loginfailed.html");
+  });
   //routre for login
   appServer.get("/login", (req, res) => {
     console.log(" get login");
     res.sendFile(__dirname + "/public/pages/login.html");
   });
+
+  appServer.post("/login", async (req, res) => {
+    let user = "";
+    let email = req.body.exampleInputEmail1;
+    let password = req.body.exampleInputPassword1;
+    let mongoResult = {};
+    try {
+      usersCollection.findOne({ email }, async function (err, result) {
+        if (err) throw err;
+        console.log(result);
+        mongoResult = result;
+        console.log(mongoResult.password);
+
+        if (await bcrypt.compare(password, mongoResult.password)) {
+          res.redirect(`/userprofile`);
+        } else {
+          res.redirect("/loginf");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  appServer.post("/loginf", async (req, res) => {
+    let user = "";
+    let userEmail = req.body.exampleInputEmail1;
+    res.redirect("/loginf");
+    // try {
+    //   let userIndex = usersCollection.findIndex(
+    //     (user) => user.email === userEmail
+    //   );
+
+    //   if (userIndex === -1) {
+    //     console.log("User is not in collection");
+    //     res.redirect("/loginf");
+    //   }
+    //   if (use) {
+    //     user = usersCollection[userIndex];
+    //   }
+
+    //   if (await bcrypt.compare(req.body.exampleInputPassword1, user.password)) {
+    //     return done(null, user);
+    //   } else {
+    //     return done(null, false, { message: "Password incorrect" });
+    //   }
+    // } catch (error) {
+    //   return done(error);
+    // }
+  });
+
   //route for signup
   appServer.get("/signup", (req, res) => {
     console.log(" get signup");
@@ -143,7 +199,7 @@ MongoClient.connect(uri, {
       .insertOne(newUser)
       .then((result) => {
         //console.log(result);
-        res.redirect("/userprofile");
+        res.redirect("/login");
       })
       .catch((error) => console.error(error));
   });
