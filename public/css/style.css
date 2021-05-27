@@ -19,6 +19,7 @@ body {
     url("/images/datin_background.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 
 .tinted-image {

@@ -36,7 +36,23 @@
 
       <!-- <img src="/images/DateIn_Logo.png" alt="DateIn Logo"> -->
       <div class="form_div">
-        <form method="POST" action="/login">
+        <form method="POST" action="/loginf">
+          <div
+            class="alert alert-warning d-flex align-items-center"
+            role="alert"
+          >
+            <svg
+              class="bi flex-shrink-0 me-2"
+              width="24"
+              height="24"
+              role="img"
+              aria-label="Warning:"
+            >
+              <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div>Email or password was incorrect...Try again</div>
+          </div>
+
           <div class="mb-3">
             <label
               for="exampleInputEmail1"
