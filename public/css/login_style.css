@@ -19,6 +19,7 @@ body {
     url("/images/Datein_Login_background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 
 .tinted-image {
