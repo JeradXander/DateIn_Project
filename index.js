@@ -108,16 +108,19 @@ MongoClient.connect(uri, {
     res.sendFile(__dirname + "/public/pages/login.html");
   });
 
-  // appServer.get("/test", (req, res) => {
-  //   res.send({ name: "DateIn" });
-  // });
-
   appServer.post("/login", async (req, res) => {
     let user = "";
     let email = req.body.exampleInputEmail1;
     let password = req.body.exampleInputPassword1;
     let mongoResult = {};
     try {
+      var users = usersCollection
+        .find({})
+        .toArray(async function (err, result) {
+          if (err) throw err;
+          console.log(result);
+        });
+
       usersCollection.findOne({ email }, async function (err, result) {
         if (err) throw err;
         console.log(result);
@@ -134,7 +137,32 @@ MongoClient.connect(uri, {
               userInfo: mongoResult,
             });
           });
+          appServer.get("/dbData", (req, res) => {
+            res.send({
+              email: mongoResult.email,
+              password: mongoResult.password,
+              firstName: mongoResult.firstName,
+              lastName: mongoResult.lastName,
+              identity: mongoResult.identity,
+              lookingFor: mongoResult.lookingFor,
+              contactNumber: mongoResult.contactNumber,
+              linkedIn: mongoResult.linkedIn,
+              age: mongoResult.age,
+              occupation: mongoResult.occupation,
+              aboutMe: mongoResult.aboutMe,
+              appsRecieved: mongoResult.appsRecieved,
+              candidatesAccepted: mongoResult.candidatesAccepted,
+              imageURL: mongoResult.imageURL,
+            });
+          });
+
+          appServer.get("/dbDataCandidates", (req, res) => {
+            res.send({ candidateArray: [] });
+          });
+
           res.redirect(`/userprofile/${currentUID}`);
+
+          //"dbDataCandidates"
         } else {
           res.redirect("/loginf");
         }

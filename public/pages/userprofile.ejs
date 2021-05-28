@@ -30,16 +30,18 @@
                 target="_blank"
                 href="https://images.unsplash.com/photo-1566396084807-d74c3e84b48f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
                 ><img
+                  id="profile_pic"
                   class="profile_pic"
                   src="https://images.unsplash.com/photo-1566396084807-d74c3e84b48f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
                 />
-                <%= name %></a
-              >
+                <!-- <%= name %>-->
+              </a>
+              <h4 id="welcomeMessage">Welcome</h4>
             </div>
           </nav>
           <div class="middle_content">
-            <button class="connections_header">Connections</button>
-            <button class="messages_header">Messages</button>
+            <button class="connections_header">Applicants</button>
+            <button class="messages_header">Resumes Recieved</button>
           </div>
           <div class="bottom_content">
             <div class="card_container"></div>
@@ -47,15 +49,9 @@
         </div>
         <div class="col-md-8 right_col">
           <h1 id="test"><%= userInfo.linkedIn %></h1>
-          <form action="/userprofile" method="POST">
-            <input
-              type="text"
-              name="userID"
-              id="userID"
-              placeholder="Enter UID"
-            />
-            <button type="submit">Submit</button>
-          </form>
+          <div class="send_resume">
+            <button type="submit">Send Resume</button>
+          </div>
         </div>
       </div>
     </div>
