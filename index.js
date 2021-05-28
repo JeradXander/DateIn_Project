@@ -67,11 +67,16 @@ appServer.listen(process.env.PORT || 3000, (error) => {
   }
 });
 
+appServer.get("/", async (req, res) => {
+  console.log(" get home");
+  res.sendFile(__dirname + "/public/pages/home.html");
+});
+
 //connecting to mongo client
 MongoClient.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(async (client) => {
+}).then((client) => {
   console.log("Connected to Database");
   const db = client.db("Datein");
   const usersCollection = db.collection("users");
