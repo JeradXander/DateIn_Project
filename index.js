@@ -71,7 +71,7 @@ appServer.listen(process.env.PORT || 3000, (error) => {
 MongoClient.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then((client) => {
+}).then(async (client) => {
   console.log("Connected to Database");
   const db = client.db("Datein");
   const usersCollection = db.collection("users");
