@@ -84,10 +84,10 @@ MongoClient.connect(uri, {
   //creating db and collection =
   const db = client.db("Datein");
   const usersCollection = db.collection("users");
-  
+
   //global variables
   var currentUID = "";
-  
+
   //route for home page
   appServer.get("/", async (req, res) => {
     console.log(" get home");
@@ -133,10 +133,10 @@ MongoClient.connect(uri, {
               index--;
             }
           }
-          
+
         });
 
-        //finding user in users by email
+      //finding user in users by email
       usersCollection.findOne({ email }, async function (err, result) {
         if (err) throw err;
         console.log(result);
@@ -197,7 +197,7 @@ MongoClient.connect(uri, {
     }
   });
 
-//loginf is the same lofic as ligin just sending the login failed html
+  //loginf is the same lofic as ligin just sending the login failed html
   appServer.post("/loginf", async (req, res) => {
     let user = "";
     let email = req.body.exampleInputEmail1;
@@ -323,7 +323,7 @@ MongoClient.connect(uri, {
     usersCollection
       .insertOne(newUser)
       .then((result) => {
-       
+
         //res.redirect("/login");
         res.redirect("/login");
       })

@@ -1,4 +1,15 @@
 
+
+/* 
+
+All this code is stuff we tried and got closde with but chose to work aound for the alpha. 
+
+*/
+
+
+
+
+
 // const BUCKET_NAME = 'dateinphotos';
 // const s3 = new aws.S3({
 //   accessKeyId: 'AKIARGC46ZTH7GQDZJVM',
@@ -128,9 +139,9 @@
 //   };
 
 
-const handleError = (err, res) => {
-    res
-      .status(500)
-      .contentType("text/plain")
-      .end("Oops! Something went wrong!");
-  };
+// const handleError = (err, res) => {
+//     res
+//       .status(500)
+//       .contentType("text/plain")
+//       .end("Oops! Something went wrong!");
+//   };
