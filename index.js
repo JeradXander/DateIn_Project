@@ -1,4 +1,4 @@
-require("dotenv").config();
+//require("dotenv").config();
 //requires express for server
 const express = require("express");
 var flash = require("express-flash");
@@ -39,7 +39,8 @@ appServer.use(express.json());
 appServer.use(express.static("public"));
 
 const MongoClient = require("mongodb").MongoClient;
-const uri = process.env.MONGOURL;
+const uri =
+  "mongodb+srv://jeradXander:westpoint@amazonsweapprentices.iyoil.mongodb.net/DateIn?retryWrites=true&w=majority";
 const { ObjectId } = require("mongodb");
 
 var upload = multer({
