@@ -15,7 +15,7 @@ const s3 = new aws.S3({});
 
 //naming express server appServer
 appServer = express();
-
+appServer.set("view engine", "ejs");
 // Parse URL-encoded bodies (as sent by HTML forms)
 appServer.use(express.urlencoded({ extended: true }));
 appServer.use(bodyParser.urlencoded({ extended: true }));
@@ -76,13 +76,9 @@ MongoClient.connect(uri, {
   const db = client.db("Datein");
   const usersCollection = db.collection("users");
   console.log(typeof usersCollection);
+  var currentUID = "";
 
   //route for User Profile
-  appServer.get("/userprofile", (req, res) => {
-    //sendgin html file
-    console.log("get profile");
-    res.sendFile(__dirname + "/public/pages/userprofile.html");
-  });
 
   //can except ?name=
   //route for home page
@@ -112,6 +108,10 @@ MongoClient.connect(uri, {
     res.sendFile(__dirname + "/public/pages/login.html");
   });
 
+  // appServer.get("/test", (req, res) => {
+  //   res.send({ name: "DateIn" });
+  // });
+
   appServer.post("/login", async (req, res) => {
     let user = "";
     let email = req.body.exampleInputEmail1;
@@ -122,10 +122,19 @@ MongoClient.connect(uri, {
         if (err) throw err;
         console.log(result);
         mongoResult = result;
+        currentUID = ObjectId(mongoResult._id);
         console.log(mongoResult.password);
 
         if (await bcrypt.compare(password, mongoResult.password)) {
-          res.redirect(`/userprofile`);
+          appServer.get(`/userprofile/${currentUID}`, async (req, res) => {
+            //sendgin html file
+            console.log("get profile");
+            res.render(__dirname + "/public/pages/userprofile.ejs", {
+              name: "DateIn",
+              userInfo: mongoResult,
+            });
+          });
+          res.redirect(`/userprofile/${currentUID}`);
         } else {
           res.redirect("/loginf");
         }
@@ -133,6 +142,10 @@ MongoClient.connect(uri, {
     } catch (error) {
       console.log(error);
     }
+  });
+
+  appServer.post("/userprofile", (req, res) => {
+    console.log(req.body.userID);
   });
 
   appServer.post("/loginf", async (req, res) => {
@@ -160,6 +173,13 @@ MongoClient.connect(uri, {
     // } catch (error) {
     //   return done(error);
     // }
+  });
+
+  appServer.get(`/userprofile/${currentUID}`, async (req, res) => {
+    //sendgin html file
+    console.log("get profile");
+    //res.sendFile(__dirname + "/public/pages/userprofile.html");
+    res.render(__dirname + "/public/pages/userprofile.ejs");
   });
 
   //route for signup
