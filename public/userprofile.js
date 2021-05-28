@@ -19,8 +19,8 @@ fetch("/dbDataCandidates")
   .then((res) => res.json())
   .then((data) => {
     for (let index = 0; index < data.candidateArray.length; index++) {
-      const element = data[index];
-      console.log(data[index]);
+      //const element = data[index];
+      console.log(data.candidateArray[index]);
     }
   });
 
