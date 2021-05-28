@@ -1,17 +1,18 @@
-//require("dotenv").config();
-//requires express for server
+//list of requires
 const express = require("express");
-var flash = require("express-flash");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
-const imager = require("multer-imager");
+const http = require("http")
+const path = require("path");
+const fs = require("fs");
 const gm = require("gm");
 const aws = require("aws-sdk");
 const multerS3 = require("multer-s3");
-const s3 = new aws.S3({});
+const { buffer } = require('buffer');
+
 
 //naming express server appServer
 appServer = express();
@@ -30,7 +31,7 @@ appServer.use(
     cookie: { secure: true },
   })
 );
-appServer.use(flash());
+
 
 // Parse JSON bodies (as sent by API clients)
 appServer.use(express.json());
@@ -38,23 +39,17 @@ appServer.use(express.json());
 //uses static public folder to access statci files
 appServer.use(express.static("public"));
 
+
+const upload = multer({
+  dest: "./uploads"
+  // you might also want to set some limits: https://github.com/expressjs/multer#limits
+});
+
 const MongoClient = require("mongodb").MongoClient;
 const uri =
   "mongodb+srv://jeradXander:westpoint@amazonsweapprentices.iyoil.mongodb.net/DateIn?retryWrites=true&w=majority";
 const { ObjectId } = require("mongodb");
 
-var upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: "dateinphotos",
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-      cb(null, Date.now().toString());
-    },
-  }),
-});
 
 //in many environments (e.g. Heroku), and as a convention, you can set the environment variable PORT to tell your web server what port to listen on.
 //So process.env.PORT || 3000 means: whatever is in the environment variable PORT, or 3000 if there's nothing there.
@@ -64,12 +59,16 @@ appServer.listen(process.env.PORT || 3000, (error) => {
     console.log(error);
   } else {
     //output to us to let us now we are listening
-    console.log("Server started at port 3000 changed");
+    console.log("Server started at port 3000 ");
   }
 });
 
+
+//get welcome and start screen had to put up here because bug was making heroku fail
 appServer.get("/", async (req, res) => {
   console.log(" get home");
+
+  //sending statis html file
   res.sendFile(__dirname + "/public/pages/home.html");
 });
 
@@ -78,32 +77,24 @@ MongoClient.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then((client) => {
+
+  //output to devs
   console.log("Connected to Database");
+
+  //creating db and collection =
   const db = client.db("Datein");
   const usersCollection = db.collection("users");
-  console.log(typeof usersCollection);
+  
+  //global variables
   var currentUID = "";
-
-  //route for User Profile
-
-  //can except ?name=
+  
   //route for home page
   appServer.get("/", async (req, res) => {
     console.log(" get home");
     res.sendFile(__dirname + "/public/pages/home.html");
-
-    // const filter = {
-    // }
-
-    // for (const key in req.query){
-
-    // }
-    // //this is example for showing sollection
-    // const results = await usersCollection.find({...req.query}).toArray();
-
-    // console.log(results);
   });
 
+  //getting login fail html page
   appServer.get("/loginf", (req, res) => {
     console.log(" get loginfailed");
     res.sendFile(__dirname + "/public/pages/loginfailed.html");
@@ -115,6 +106,99 @@ MongoClient.connect(uri, {
   });
 
   appServer.post("/login", async (req, res) => {
+
+    //global varialbes
+    let user = "";
+    let email = req.body.exampleInputEmail1;
+    let password = req.body.exampleInputPassword1;
+    let mongoResult = {};
+    let candidatesArray = [];
+
+    //try catch for pulling data from page
+    try {
+      var users = usersCollection
+        .find({})
+        .toArray(async function (err, result) {
+          if (err) throw err;
+          //console.log(result);
+
+          //looping through collection to pull top top
+          for (let index = 0; index < 10; index++) {
+            let randomNum = Math.floor(Math.random() * result.length);
+
+            //checking if user is already picked in top 10
+            if (!candidatesArray.includes(result[randomNum])) {
+              candidatesArray.push(result[randomNum]);
+            } else {
+              index--;
+            }
+          }
+          
+        });
+
+        //finding user in users by email
+      usersCollection.findOne({ email }, async function (err, result) {
+        if (err) throw err;
+        console.log(result);
+
+        //getting result from mong
+        mongoResult = result;
+        currentUID = ObjectId(mongoResult._id);
+        console.log(mongoResult.password);
+
+        //waiting for results then comparing data
+        if (await bcrypt.compare(password, mongoResult.password)) {
+          appServer.get(`/userprofile/${currentUID}`, async (req, res) => {
+            //sendgin html file
+            console.log("get profile");
+
+            //rendering file and sending user info 
+            res.render(__dirname + "/public/pages/userprofile.ejs", {
+              name: "DateIn",
+              userInfo: mongoResult,
+            });
+          });
+
+          //getting info from fetch in client side
+          appServer.get("/dbData", (req, res) => {
+            res.send({
+              email: mongoResult.email,
+              password: mongoResult.password,
+              firstName: mongoResult.firstName,
+              lastName: mongoResult.lastName,
+              identity: mongoResult.identity,
+              lookingFor: mongoResult.lookingFor,
+              contactNumber: mongoResult.contactNumber,
+              linkedIn: mongoResult.linkedIn,
+              age: mongoResult.age,
+              occupation: mongoResult.occupation,
+              aboutMe: mongoResult.aboutMe,
+              appsRecieved: mongoResult.appsRecieved,
+              candidatesAccepted: mongoResult.candidatesAccepted,
+              imageURL: mongoResult.imageURL,
+            });
+          });
+
+          //sending top 10 to client side
+          appServer.get("/dbDataCandidates", (req, res) => {
+            res.send({ candidateArray: candidatesArray });
+          });
+          //redirection to userprofile
+          res.redirect(`/userprofile/${currentUID}`);
+
+          //"dbDataCandidates"
+        } else {
+          //login failed
+          res.redirect("/loginf");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+//loginf is the same lofic as ligin just sending the login failed html
+  appServer.post("/loginf", async (req, res) => {
     let user = "";
     let email = req.body.exampleInputEmail1;
     let password = req.body.exampleInputPassword1;
@@ -193,37 +277,8 @@ MongoClient.connect(uri, {
     }
   });
 
-  appServer.post("/userprofile", (req, res) => {
-    console.log(req.body.userID);
-  });
 
-  appServer.post("/loginf", async (req, res) => {
-    let user = "";
-    let userEmail = req.body.exampleInputEmail1;
-    res.redirect("/loginf");
-    // try {
-    //   let userIndex = usersCollection.findIndex(
-    //     (user) => user.email === userEmail
-    //   );
-
-    //   if (userIndex === -1) {
-    //     console.log("User is not in collection");
-    //     res.redirect("/loginf");
-    //   }
-    //   if (use) {
-    //     user = usersCollection[userIndex];
-    //   }
-
-    //   if (await bcrypt.compare(req.body.exampleInputPassword1, user.password)) {
-    //     return done(null, user);
-    //   } else {
-    //     return done(null, false, { message: "Password incorrect" });
-    //   }
-    // } catch (error) {
-    //   return done(error);
-    // }
-  });
-
+  //get for userprofile 
   appServer.get(`/userprofile/${currentUID}`, async (req, res) => {
     //sendgin html file
     console.log("get profile");
@@ -243,6 +298,8 @@ MongoClient.connect(uri, {
     //get req password
     //get bcrypto hash password
 
+    //signing up new user 
+    imageKey = req.body.inputEmail;
     const newUser = {
       email: req.body.inputEmail,
       password: hashedPassword,
@@ -258,47 +315,26 @@ MongoClient.connect(uri, {
       appsRecieved: [],
       candidatesAccepted: [],
       imageURL:
-        "https://images.unsplash.com/photo-1604700403855-dc64a1320324?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80",
+        req.body.imageUrl,
     };
 
-    req.flash("success", "Registration successfully");
-    res.locals.message = req.flash();
 
+    //inserting new user into db
     usersCollection
       .insertOne(newUser)
       .then((result) => {
-        //console.log(result);
+       
+        //res.redirect("/login");
         res.redirect("/login");
       })
       .catch((error) => console.error(error));
   });
 
-  //edit
-  // appServer.put("/info", async (req, res) => {
-  //   const { name, password } = req.body;
-  //   const { _id } = req.params;
-
-  //   const filter = {
-  //     _id: ObjectId(id),
-  //   };
-
-  //   const updateDocument = {};
-
-  //   //example
-  //   if (name) {
-  //     updateDocument[name] = name;
-  //   }
-
-  //   const results = await usersCollection.updateOne(filter, {
-  //     $set: updateDocument,
-  //   });
-
-  //   console.log(results);
-  // });
+  //route for User Profile to use later once we figure out s3
+  appServer.get("/userImagePage", (req, res) => {
+    //sendgin html file
+    console.log("get userImagePage");
+    res.sendFile(__dirname + "/public/pages/userImage.html");
+  });
 });
 
-function randstr(prefix) {
-  return Math.random()
-    .toString(36)
-    .replace("0.", prefix || "");
-}
