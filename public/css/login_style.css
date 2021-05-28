@@ -12,11 +12,8 @@ body {
   width: 100vw;
   /* display: flex; */
   background-color: #370617;
-  background-image: linear-gradient(
-      rgba(55, 6, 23, 0.9),
-      rgba(255, 186, 8, 0.25)
-    ),
-    url("/images/Datein_Login_background.jpeg");
+  background-image: linear-gradient(rgba(55, 6, 23, 1), rgba(255, 186, 8, 0.4)),
+    url("/images/loginPic.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
