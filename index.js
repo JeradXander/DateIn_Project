@@ -127,7 +127,7 @@ MongoClient.connect(uri, {
           if (err) throw err;
           //console.log(result);
 
-          for (let index = 0; index < 9; index++) {
+          for (let index = 0; index < 10; index++) {
             let randomNum = Math.floor(Math.random() * result.length);
             if (!candidatesArray.includes(result[randomNum])) {
               candidatesArray.push(result[randomNum]);
