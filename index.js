@@ -119,12 +119,27 @@ MongoClient.connect(uri, {
     let email = req.body.exampleInputEmail1;
     let password = req.body.exampleInputPassword1;
     let mongoResult = {};
+    let candidatesArray = [];
     try {
       var users = usersCollection
         .find({})
         .toArray(async function (err, result) {
           if (err) throw err;
-          console.log(result);
+          //console.log(result);
+
+          for (let index = 0; index < 9; index++) {
+            let randomNum = Math.floor(Math.random() * result.length);
+            if (!candidatesArray.includes(result[randomNum])) {
+              candidatesArray.push(result[randomNum]);
+            } else {
+              index--;
+            }
+          }
+          console.log(candidatesArray.length);
+          for (let index = 0; index < candidatesArray.length; index++) {
+            console.log(candidatesArray[index]);
+          }
+          //console.log(...getNonDuplicatedValues);
         });
 
       usersCollection.findOne({ email }, async function (err, result) {
@@ -163,7 +178,7 @@ MongoClient.connect(uri, {
           });
 
           appServer.get("/dbDataCandidates", (req, res) => {
-            res.send({ candidateArray: [] });
+            res.send({ candidateArray: candidatesArray });
           });
 
           res.redirect(`/userprofile/${currentUID}`);
