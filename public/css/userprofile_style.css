@@ -15,11 +15,8 @@ body {
   padding: 0;
 
   background-color: #370617;
-  background-image: linear-gradient(
-      rgba(55, 6, 23, 0.9),
-      rgba(255, 186, 8, 0.25)
-    ),
-    url("/images/Datein_Login_background.jpg");
+  background-image: linear-gradient(rgba(55, 6, 23, 1), rgba(255, 186, 8, 0.4)),
+    url("/images/profileImage.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
