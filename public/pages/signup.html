@@ -471,6 +471,18 @@
                   </select>
                 </div>
               </div>
+              <div class="col-sm-6">
+                <label for="inputPhotoURL" style="color: #ffffff"
+                  >Image Address</label
+                >
+                <input
+                  type="url"
+                  class="form-control"
+                  id="inputImageUrl"
+                  name="imageUrl"
+                  placeholder="enter image address for your photo"
+                />
+              </div>
 
               <div
                 class="form_group_row"
@@ -513,31 +525,7 @@ Make it count</textarea
                   </label>
                 </div>
               </div>
-              <form action="">
-                <img
-                  id="output"
-                  src="../images/DateIn_favicon_transparent.png"
-                  width="100"
-                  height="100"
-                  style="margin-top: 10px; margin-bottom: 10px"
-                />
 
-                <label for="userImage" style="color: #ffffff">User Image</label>
-                <div style="background-color: white; width: 50%">
-                  <div class="input-group mb-3">
-                    <div class="custom-file">
-                      <input
-                        accept="image/*"
-                        type="file"
-                        class="custom-file-input"
-                        id="userImage"
-                        name="userImage"
-                        onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </form>
               <div style="display: flex; justify-content: center">
                 <!-- <% if(locals.message){ %>
                   <div class="alert alert-success" role="alert">
